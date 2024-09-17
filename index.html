@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sound Clock</title>
+</head>
+<body>
+    <button id="play-time-sound">Play Time Sound</button>
+
+    <audio id="hour-quadrant-sound" src="hour_quadrant.mp3"></audio>
+    <audio id="hour-within-quadrant-sound" src="hour_within_quadrant.mp3"></audio>
+    <audio id="minute-quadrant-sound" src="minute_quadrant.mp3"></audio>
+    <audio id="minute-within-quadrant-sound" src="minute_within_quadrant.mp3"></audio>
+
+    <script>
+        document.getElementById('play-time-sound').addEventListener('click', playTimeSound);
+
+        function playSound(audioElement, times, callback) {
+            if (times <= 0) {
+                if (callback) callback();
+                return;
+            }
+
+            audioElement.play();
+            audioElement.onended = () => playSound(audioElement, times - 1, callback);
+        }
+
+        function playTimeSound() {
+            const now = new Date();
+            let hour = now.getHours() % 12; // Convert to 12-hour format
+            hour = hour === 0 ? 12 : hour; // Treat midnight/noon as 12
+            const minute = now.getMinutes();
+
+            // Calculate hour quadrant and hour within quadrant (3-hour quadrants)
+            const hourQuadrant = Math.floor((hour - 1) / 3) + 1;
+            const hourWithinQuadrant = (hour - 1) % 3 + 1;
+
+            // Calculate minute quadrant and minute within quadrant (15-minute quadrants)
+            const minuteQuadrant = Math.floor(minute / 15) + 1;
+            const minuteWithinQuadrant = (minute % 15) + 1;
+
+            const hourQuadrantSound = document.getElementById('hour-quadrant-sound');
+            const hourWithinQuadrantSound = document.getElementById('hour-within-quadrant-sound');
+            const minuteQuadrantSound = document.getElementById('minute-quadrant-sound');
+            const minuteWithinQuadrantSound = document.getElementById('minute-within-quadrant-sound');
+
+            // Play hour quadrant sound m-1 times
+            playSound(hourQuadrantSound, hourQuadrant - 1, () => {
+                // Play hour within quadrant sound n-1 times
+                playSound(hourWithinQuadrantSound, hourWithinQuadrant - 1, () => {
+                    // Play minute quadrant sound i-1 times
+                    playSound(minuteQuadrantSound, minuteQuadrant - 1, () => {
+                        // Play minute within quadrant sound j-1 times
+                        playSound(minuteWithinQuadrantSound, minuteWithinQuadrant - 1);
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>
