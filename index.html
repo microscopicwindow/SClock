@@ -5,9 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sound Clock</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <button id="play-time-sound">Play Time Soundss</button>
+    <h1 id="current-time">00:00 AM</h1>
+    <button id="play-time-sound">Play Time Sound</button>
 
     <audio id="hour-quadrant-sound" src="hour_quadrant.mp3"></audio>
     <audio id="hour-within-quadrant-sound" src="hour_within_quadrant.mp3"></audio>
@@ -33,6 +53,10 @@
             let hour = now.getHours() % 12; // Convert to 12-hour format
             hour = hour === 0 ? 12 : hour; // Treat midnight/noon as 12
             const minute = now.getMinutes();
+            const amPm = now.getHours() >= 12 ? 'PM' : 'AM';
+
+            // Display the current time visually
+            document.getElementById('current-time').textContent = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')} ${amPm}`;
 
             // Calculate hour quadrant and hour within quadrant (3-hour quadrants)
             const hourQuadrant = Math.floor((hour - 1) / 3) + 1;
