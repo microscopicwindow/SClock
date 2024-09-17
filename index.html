@@ -27,7 +27,7 @@
 </head>
 <body>
     <h1 id="current-time">00:00 AM</h1>
-    <button id="play-time-sound">Play Time Sound</button>
+    <button id="play-time-sound">Play Time Soundzz</button>
 
     <audio id="hour-quadrant-sound" src="hour_quadrant.mp3"></audio>
     <audio id="hour-within-quadrant-sound" src="hour_within_quadrant.mp3"></audio>
@@ -73,7 +73,7 @@
 
             // Play sounds in sequence
             playSound(hourQuadrantSound, hourQuadrant - 1, () => {
-                playSound(hourWithinQuadrantSound, hourWithinQuadrant - 1, () => {
+                playSound(hourWithinQuadrantSound, hourWithinQuadrant, () => { // Changed to play n times
                     playSound(minuteQuadrantSound, minuteQuadrant - 1, () => {
                         playSound(minuteWithinQuadrantSound, minuteWithinQuadrant - 1);
                     });
