@@ -23,6 +23,7 @@
                 return;
             }
 
+            audioElement.currentTime = 0; // Reset the audio to the beginning
             audioElement.play();
             audioElement.onended = () => playSound(audioElement, times - 1, callback);
         }
@@ -46,13 +47,10 @@
             const minuteQuadrantSound = document.getElementById('minute-quadrant-sound');
             const minuteWithinQuadrantSound = document.getElementById('minute-within-quadrant-sound');
 
-            // Play hour quadrant sound m-1 times
+            // Play sounds in sequence
             playSound(hourQuadrantSound, hourQuadrant - 1, () => {
-                // Play hour within quadrant sound n-1 times
                 playSound(hourWithinQuadrantSound, hourWithinQuadrant - 1, () => {
-                    // Play minute quadrant sound i-1 times
                     playSound(minuteQuadrantSound, minuteQuadrant - 1, () => {
-                        // Play minute within quadrant sound j-1 times
                         playSound(minuteWithinQuadrantSound, minuteWithinQuadrant - 1);
                     });
                 });
